@@ -5,6 +5,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.eleos.app.model.CountriesResponseDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,18 +38,29 @@ public class CountryService {
 		Country country = new Country(countryDTO.getName());
 		countryRepository.save(country);
 	}
-	
-	public List<CountryDTO> getCountries() {
-		//TODO: pagination
-		List<Country> countries = new ArrayList<Country>();
-		countryRepository.findAll().iterator().forEachRemaining(countries::add);
-		
-        List<CountryDTO> countryDTOs = countries
-                .stream()
-                .map(country -> new CountryDTO(country.getName()))
-                .sorted(Comparator.comparing(CountryDTO::getName))
-                .collect(Collectors.toList());
-		return countryDTOs;
+
+	/**
+	 *
+	 * @param pageNumber
+	 * @return
+	 */
+	public CountriesResponseDTO getCountries(Integer pageNumber) {
+		Pageable paging = PageRequest.of(pageNumber, 5);
+		Page<Country> page = countryRepository.findAll(paging);
+
+		List<Country> countries = new ArrayList<>();
+		page.forEach(countries::add);
+		List<CountryDTO> countryDTOs = countries
+				.stream()
+				.map(country -> new CountryDTO(country.getName()))
+				.sorted(Comparator.comparing(CountryDTO::getName))
+				.collect(Collectors.toList());
+
+		CountriesResponseDTO response =
+				new CountriesResponseDTO(countryDTOs, page.getNumber(),
+						page.getTotalElements(), page.getTotalPages());
+
+		return response;
 	}
 	
 	public Country getCountryById(Integer id) throws CountryNotFoundException  {

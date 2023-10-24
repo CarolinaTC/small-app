@@ -3,16 +3,12 @@ package com.eleos.app.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.eleos.app.model.CountriesResponseDTO;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.eleos.app.db.Country;
 import com.eleos.app.exception.CountryNotFoundException;
@@ -44,8 +40,9 @@ public class CountryController {
 	//	return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
 	//}
     @GetMapping("/countries")
-    public ResponseEntity<List<CountryDTO>> getCountries() {
-        return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
+    public ResponseEntity<CountriesResponseDTO> getCountries(@RequestParam(defaultValue = "0") int page) {
+
+        return new ResponseEntity<>(countryService.getCountries(page), HttpStatus.OK);
     }
 	// endpoint 3
 	@GetMapping("/country/{id}")
