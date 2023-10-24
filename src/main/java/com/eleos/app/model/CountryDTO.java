@@ -15,13 +15,10 @@ public class CountryDTO {
     private String name;
     
 	public CountryDTO() {
-	
-
 	}
 
 	public CountryDTO(String name) {
 		this.name = name;
-
 	}
 
 	public String getName() {
