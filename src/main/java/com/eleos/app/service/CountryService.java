@@ -1,6 +1,9 @@
 package com.eleos.app.service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,21 +35,31 @@ public class CountryService {
 		countryRepository.save(country);
 	}
 	
-	public Iterable<Country> getCountries() {
-		//TODO: p
-
-		return countryRepository.findAll();
+	public List<CountryDTO> getCountries() {
+		//TODO: pagination
+		List<Country> countries = new ArrayList<Country>();
+		countryRepository.findAll().iterator().forEachRemaining(countries::add);
+		
+        List<CountryDTO> countryDTOs = countries
+                .stream()
+                .map(country -> new CountryDTO(country.getName()))
+                .sorted(Comparator.comparing(CountryDTO::getName))
+                .collect(Collectors.toList());
+		return countryDTOs;
 	}
 	
-	public Country getCountryById(Integer id) {
-		//TODO: if exists return else throw exception 
-		//TODO: ordem alfabetica
-		
-		return countryRepository.findById(id).get();
+	public Country getCountryById(Integer id) throws CountryNotFoundException  {
+
+		if (countryRepository.findById(id).isPresent()) {
+			return countryRepository.findById(id).get();
+
+		} else {
+			throw new CountryNotFoundException();
+		}
+
 	}
 	
 	public void updateCountryName(Integer id, CountryDTO countryDTO) throws CountryNotFoundException {
-		//TODO: if exists with id update else throw exception
 		   if (countryRepository.findById(id).isPresent()) {
 		        Country country = countryRepository.findById(id).get();
 		        country.setName(countryDTO.getName());

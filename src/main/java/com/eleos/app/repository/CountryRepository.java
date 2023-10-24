@@ -7,4 +7,7 @@ import com.eleos.app.db.Country;
 
 public interface CountryRepository extends CrudRepository<Country, Integer > {
 	
+
+    //List<Country> findAllOrderedAlphabetically();
+	
 }

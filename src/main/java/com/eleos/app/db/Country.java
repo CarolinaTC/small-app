@@ -6,7 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Data;
+
 @Entity
+@Data
 public class Country {
 	
 	@Id
@@ -18,7 +21,7 @@ public class Country {
     
     
     public Country() {
-   
+  
     }
     
 	public Country (String name) {
@@ -30,4 +33,9 @@ public class Country {
 		return name;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+
 }

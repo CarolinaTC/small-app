@@ -1,5 +1,8 @@
 package com.eleos.app.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,18 +38,26 @@ public class CountryController {
 	}
 	
 	// endpoint 2
-	@GetMapping("/countries")
-	
-	public ResponseEntity<Iterable<Country>> getCountries() {
-		return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
-	}
-	
+	//@GetMapping("/countries") 
+		
+	//public ResponseEntity<List<Country>> getCountries() {
+	//	return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
+	//}
+    @GetMapping("/countries")
+    public ResponseEntity<List<CountryDTO>> getCountries() {
+        return new ResponseEntity<>(countryService.getCountries(), HttpStatus.OK);
+    }
 	// endpoint 3
 	@GetMapping("/country/{id}")
 	
 	public ResponseEntity<Country> getCountryById(@PathVariable(required = false) Integer id) {
-		
-		return new ResponseEntity<>(countryService.getCountryById(id), HttpStatus.OK);
+		try {
+			new ResponseEntity<>(countryService.getCountryById(id), HttpStatus.OK);
+			return ResponseEntity.ok().build();
+		} catch (CountryNotFoundException e) {
+			return	ResponseEntity.notFound().build();
+		}
+
 	}
 	
 	// endpoint 4
