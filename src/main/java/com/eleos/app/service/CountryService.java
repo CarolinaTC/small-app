@@ -77,9 +77,9 @@ public class CountryService {
 	 * @return The requested country.
 	 * @throws CountryNotFoundException if the country is not found.
 	 */
-	public Country getCountryById(Integer id) throws CountryNotFoundException  {
+	public CountryDTO getCountryById(Integer id) throws CountryNotFoundException  {
 		if (countryRepository.findById(id).isPresent()) {
-			return countryRepository.findById(id).get();
+			return new CountryDTO(countryRepository.findById(id).get().getName());
 		} else {
 			throw new CountryNotFoundException();
 		}
@@ -93,13 +93,13 @@ public class CountryService {
 	 * @throws CountryNotFoundException if the country is not found.
 	 */
 	public void updateCountryName(Integer id, CountryDTO countryDTO) throws CountryNotFoundException {
-		   if (countryRepository.findById(id).isPresent()) {
-		        Country country = countryRepository.findById(id).get();
-		        country.setName(countryDTO.getName());
-		        countryRepository.save(country);
-		    } else {
-		        throw new CountryNotFoundException();
-		    }
+	   if (countryRepository.findById(id).isPresent()) {
+	        Country country = countryRepository.findById(id).get();
+	        country.setName(countryDTO.getName());
+	        countryRepository.save(country);
+	    } else {
+	        throw new CountryNotFoundException();
+	    }
 	}
 	/**
 	 * Delete a country by its unique ID.

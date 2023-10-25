@@ -24,7 +24,7 @@ public class CountryController {
 		this.countryService = countryService;
 	}
 
-	// endpoint 1
+
 	/**
 	 * Create a new country.
 	 *
@@ -41,7 +41,7 @@ public class CountryController {
 		}
 	}
 	
-	// endpoint 2
+
 	/**
 	 * Get a paginated list of all countries sorted alphabetically by name.
 	 *
@@ -52,7 +52,7 @@ public class CountryController {
     public ResponseEntity<CountriesResponseDTO> getCountries(@RequestParam(defaultValue = "0") int page) {
         return new ResponseEntity<>(countryService.getCountries(page), HttpStatus.OK);
     }
-	// endpoint 3
+
 	/**
 	 * Get a country by its unique ID.
 	 *
@@ -60,16 +60,15 @@ public class CountryController {
 	 * @return ResponseEntity containing the country and HTTP status OK if found, or NOT_FOUND if not found.
 	 */
 	@GetMapping("/country/{id}")
-	public ResponseEntity<Country> getCountryById(@PathVariable(required = false) Integer id) {
+	public ResponseEntity<CountryDTO> getCountryById(@PathVariable(required = false) Integer id) {
 		try {
-			new ResponseEntity<>(countryService.getCountryById(id), HttpStatus.OK);
-			return ResponseEntity.ok().build();
+			return new ResponseEntity<>(countryService.getCountryById(id), HttpStatus.OK);
 		} catch (CountryNotFoundException e) {
 			return	ResponseEntity.notFound().build();
 		}
 	}
 	
-	// endpoint 4
+
 	/**
 	 * Update a country's name by its unique ID.
 	 *
@@ -84,11 +83,11 @@ public class CountryController {
 			return ResponseEntity.ok().build();
 		} catch (CountryNotFoundException e) {
 			return	ResponseEntity.notFound().build();
-		}
+		} 
 	}
 	
 	
-	// endpoint 5
+
 	/**
 	 * Delete a country by its unique ID.
 	 *

@@ -1,8 +1,5 @@
 package com.eleos.app.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.util.List;
 /**
  * Data Transfer Object (DTO) for representing a list of countries and pagination information.

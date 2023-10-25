@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import lombok.Data;
 
 @Entity
-@Data
 public class Country {
 	
 	@Id
@@ -29,8 +28,8 @@ public class Country {
 	}
 	
 
-	public String setName(String name) {
-		return name;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public String getName() {
