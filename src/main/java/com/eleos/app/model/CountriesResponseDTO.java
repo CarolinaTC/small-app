@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
-
+/**
+ * Data Transfer Object (DTO) for representing a list of countries and pagination information.
+ */
 public class CountriesResponseDTO {
 
 	private List<CountryDTO> countries;
@@ -14,7 +16,14 @@ public class CountriesResponseDTO {
 
 	public CountriesResponseDTO() {
 	}
-
+	/**
+	 * Constructs a CountriesResponseDTO with the provided data.
+	 *
+	 * @param countries  List of CountryDTO objects representing countries.
+	 * @param currentPage The current page number.
+	 * @param totalItems  The total number of items across all pages.
+	 * @param totalPages  The total number of pages.
+	 */
 	public CountriesResponseDTO(List<CountryDTO> countries, Integer currentPage, Long totalItems, Integer totalPages) {
 		this.countries = countries;
 		this.currentPage = currentPage;

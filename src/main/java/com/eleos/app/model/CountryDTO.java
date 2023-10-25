@@ -8,7 +8,9 @@ import javax.persistence.Id;
 
 import lombok.Data;
 import lombok.Getter;
-
+/**
+ * Data Transfer Object (DTO) for representing country data.
+ */
 @Data
 public class CountryDTO {
 	    
@@ -17,6 +19,11 @@ public class CountryDTO {
 	public CountryDTO() {
 	}
 
+	/**
+	 * Constructs a CountryDTO with the provided country name.
+	 *
+	 * @param name The name of the country.
+	 */
 	public CountryDTO(String name) {
 		this.name = name;
 	}
