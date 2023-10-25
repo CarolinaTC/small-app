@@ -30,8 +30,13 @@ public class CountryService {
 	public CountryService (CountryRepository countryRepository) {
 		this.countryRepository = countryRepository;
 	}
-	
-	
+
+	/**
+	 * Create a new country if it doesn't already exist.
+	 *
+	 * @param countryDTO JSON object containing the country's name.
+	 * @throws CountryAlreadyExist if the country already exists.
+	 */
 	public void createCountry (CountryDTO countryDTO) throws CountryAlreadyExist {
 		if (countryRepository.existsByName(countryDTO.getName())){
 			throw new CountryAlreadyExist();
@@ -39,13 +44,13 @@ public class CountryService {
 			Country country = new Country(countryDTO.getName());
 			countryRepository.save(country);
 		}
-
 	}
 
 	/**
+	 * Get a paginated list of countries sorted alphabetically by name.
 	 *
-	 * @param pageNumber
-	 * @return
+	 * @param pageNumber Page number for pagination.
+	 * @return CountriesResponseDTO containing a list of countries and pagination information.
 	 */
 	public CountriesResponseDTO getCountries(Integer pageNumber) {
 		Pageable paging = PageRequest.of(pageNumber, 5);
@@ -62,21 +67,31 @@ public class CountryService {
 		CountriesResponseDTO response =
 				new CountriesResponseDTO(countryDTOs, page.getNumber(),
 						page.getTotalElements(), page.getTotalPages());
-
 		return response;
 	}
-	
-	public Country getCountryById(Integer id) throws CountryNotFoundException  {
 
+	/**
+	 * Get a country by its unique ID.
+	 *
+	 * @param id The unique ID of the country.
+	 * @return The requested country.
+	 * @throws CountryNotFoundException if the country is not found.
+	 */
+	public Country getCountryById(Integer id) throws CountryNotFoundException  {
 		if (countryRepository.findById(id).isPresent()) {
 			return countryRepository.findById(id).get();
-
 		} else {
 			throw new CountryNotFoundException();
 		}
-
 	}
-	
+
+	/**
+	 * Update a country's name by its unique ID.
+	 *
+	 * @param id  The unique ID of the country to be updated.
+	 * @param countryDTO JSON object containing the new country name.
+	 * @throws CountryNotFoundException if the country is not found.
+	 */
 	public void updateCountryName(Integer id, CountryDTO countryDTO) throws CountryNotFoundException {
 		   if (countryRepository.findById(id).isPresent()) {
 		        Country country = countryRepository.findById(id).get();
@@ -85,10 +100,13 @@ public class CountryService {
 		    } else {
 		        throw new CountryNotFoundException();
 		    }
-		
-
 	}
-	
+	/**
+	 * Delete a country by its unique ID.
+	 *
+	 * @param id The unique ID of the country to be deleted.
+	 * @throws CountryNotFoundException if the country is not found.
+	 */
 	public void deleteCountry(Integer id) throws CountryNotFoundException {
 	
 		if (countryRepository.findById(id).isPresent()) {
@@ -97,6 +115,5 @@ public class CountryService {
 		else {
 			throw new CountryNotFoundException();
 		}
-		
 	}
 }
