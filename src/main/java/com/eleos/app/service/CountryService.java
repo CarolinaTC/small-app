@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.eleos.app.exception.CountryAlreadyExist;
 import com.eleos.app.model.CountriesResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,12 +32,14 @@ public class CountryService {
 	}
 	
 	
-	public void createCountry (CountryDTO countryDTO) {
-		//TODO: check if country exists
-		//TODO: if so, throw exception
-		
-		Country country = new Country(countryDTO.getName());
-		countryRepository.save(country);
+	public void createCountry (CountryDTO countryDTO) throws CountryAlreadyExist {
+		if (countryRepository.existsByName(countryDTO.getName())){
+			throw new CountryAlreadyExist();
+		} else {
+			Country country = new Country(countryDTO.getName());
+			countryRepository.save(country);
+		}
+
 	}
 
 	/**
